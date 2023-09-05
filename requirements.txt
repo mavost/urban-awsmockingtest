@@ -1,0 +1,5 @@
+boto3==1.28.40
+moto==4.2.2
+pytest==7.4.1
+PyYAML==6.0.1
+requests==2.31.0
