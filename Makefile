@@ -8,18 +8,21 @@ testvar ?= somesetting
 
 .PHONY: run_tests clean
 
-run_tests: tests/test_s3.py
+run_tests: logs/test_results.log
 
-tests/test_cmd_var.py: $(VENV_NAME)/bin/activate
-	source $(VENV_NAME)/bin/activate && pytest -q $@ --cmdopt=$(testvar)
+# actual test cases
+logs/test_results.log: tests/test_s3.py src/*.py tests/conftest.py pytest.ini
+	source $(VENV_NAME)/bin/activate && pytest -q $<
 
-tests/test_s3.py: $(VENV_NAME)/bin/activate
-	source $(VENV_NAME)/bin/activate && pytest -q $@
-
+# preparing python environment
 $(VENV_NAME)/bin/activate: requirements.txt
 	python3 -m venv $(VENV_NAME)
-	$(VENV_NAME)/bin/pip install -r $?
+	$(VENV_NAME)/bin/pip install -r $<
 
 clean:
 	rm -rf $(VENV_NAME)
+
+# another experiment with command line
+tests/test_cmd_var.py:
+	source $(VENV_NAME)/bin/activate && pytest -q $@ --cmdopt=$(testvar)
 

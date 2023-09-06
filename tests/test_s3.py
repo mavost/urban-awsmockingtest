@@ -4,6 +4,7 @@ from tempfile import NamedTemporaryFile
 
 from s3 import MyS3Client
 
+# fixtures for test suite
 
 @pytest.fixture
 def bucket_name():
@@ -11,18 +12,26 @@ def bucket_name():
 
 
 @pytest.fixture
-def s3_test(s3_client, bucket_name):
-    s3_client.create_bucket(Bucket=bucket_name)
+def region_name():
+    return "eu-central-1"
+
+
+@pytest.fixture
+def s3_test(s3_client, bucket_name, region_name):
+    s3_client.create_bucket(
+        Bucket=bucket_name,
+        CreateBucketConfiguration={'LocationConstraint': region_name})
     yield
 
+# test cases
 
-def test_list_buckets(s3_client, s3_test):
+def test_list_buckets(s3_client, s3_test, bucket_name):
     my_client = MyS3Client()
     buckets = my_client.list_buckets()
     logging.info('These are my buckets:')
     for bucket in buckets:
         logging.info(f"{bucket}")
-    assert buckets == ["my-test-bucket"]
+    assert buckets == [bucket_name]
 
 
 def test_list_objects(s3_client, s3_test):
