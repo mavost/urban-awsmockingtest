@@ -1,23 +1,24 @@
-VENV_NAME?=mytestenv
+SHELL := /bin/bash
 
-PYTHON=${VENV_NAME}/bin/python
+VENV_NAME ?= mytestenv
 
-testvar?=somesetting
+PYTHON = $(VENV_NAME)/bin/python
 
-prepare_venv: $(VENV_NAME)/bin/activate
+testvar ?= somesetting
+
+.PHONY: run_tests clean
 
 run_tests: tests/test_s3.py
 
-tests/test_cmd_var.py: prepare_venv
-	pytest -q $@ --cmdopt=$(testvar)
+tests/test_cmd_var.py: $(VENV_NAME)/bin/activate
+	source $(VENV_NAME)/bin/activate && pytest -q $@ --cmdopt=$(testvar)
 
-tests/test_s3.py: prepare_venv
-	pytest -q $@
+tests/test_s3.py: $(VENV_NAME)/bin/activate
+	source $(VENV_NAME)/bin/activate && pytest -q $@
 
 $(VENV_NAME)/bin/activate: requirements.txt
 	python3 -m venv $(VENV_NAME)
 	$(VENV_NAME)/bin/pip install -r $?
-	touch $@
 
 clean:
 	rm -rf $(VENV_NAME)
