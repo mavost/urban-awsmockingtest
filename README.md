@@ -14,7 +14,7 @@ make run_tests
 or trigger a rebuild forcefully by
 
 ```bash
-rm logs/test_results.log && make run_tests
+rm -f logs/test_results.log && make run_tests
 ```
 
 in case there have been no changes to the code base on neither `src` nor `tests` side.

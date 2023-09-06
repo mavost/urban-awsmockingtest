@@ -21,6 +21,9 @@ $(VENV_NAME)/bin/activate: requirements.txt
 
 clean:
 	rm -rf $(VENV_NAME)
+	rm -rf **/__pycache__
+	rm -rf .pytest_cache
+	rm -rf logs/*.log
 
 # another experiment with command line
 tests/test_cmd_var.py:
