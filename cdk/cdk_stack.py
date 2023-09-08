@@ -1,6 +1,8 @@
 from aws_cdk import (
     Stack,
-    CfnOutput
+    CfnOutput,
+    aws_lambda,
+    aws_iam
 )
 #import aws_cdk.aws_secretsmanager as secretsmanager
 from constructs import Construct
@@ -26,6 +28,33 @@ class CdkStack(Stack):
             value=self.region,
             description='Region of account',
             export_name=f"{self.stack_name}-Region-{stage}"
+        )
+
+        my_LambdaRole = aws_iam.Role(self,f"{self.stack_name}-MyLambdaRoleID",
+            assumed_by=aws_iam.ServicePrincipal('lambda.amazonaws.com'),
+            role_name=f"{self.stack_name}-MyLambdaRoleName"
+        )
+
+        my_LambdaRole.add_to_policy(
+            aws_iam.PolicyStatement(
+                effect=aws_iam.Effect.ALLOW,
+                resources=[
+                    "arn:aws:cloudformation:*:*:stack/*/*",
+                    "arn:aws:lambda:*:*:*"],
+                actions=[
+                    'cloudformation:ListStacks',
+                    'cloudformation:DescribeStacks',
+                    'lambda:ListTags'
+                ]
+            )
+        )
+
+        my_lambda = aws_lambda.Function(
+            self, f"{self.stack_name}-LambdaReporter-{stage}",
+            runtime=aws_lambda.Runtime.PYTHON_3_10,
+            code=aws_lambda.Code.from_asset('src/lambda_reporter'),
+            handler='reporter.handler',
+            role=my_LambdaRole
         )
 
         # get latest version of plain string attribute from system manager during deployment
