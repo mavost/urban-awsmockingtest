@@ -1,0 +1,65 @@
+{
+    "Stacks": [
+        {
+            "StackId": "arn:aws:cloudformation:eu-central-1:929292929292929292:stack/TestingCdkStack/d784fd60-4e3e-11ee-b7f8-0a58bb71d412",
+            "StackName": "TestingCdkStack",
+            "ChangeSetId": "arn:aws:cloudformation:eu-central-1:929292929292929292:changeSet/cdk-deploy-change-set/1682b5b3-85c4-48f9-9a0b-502c0abd8df1",
+            "Parameters": [
+                {
+                    "ParameterKey": "BootstrapVersion",
+                    "ParameterValue": "/cdk-bootstrap/hnb659fds/version",
+                    "ResolvedValue": "18"
+                }
+            ],
+            "CreationTime": "datetime.datetime(2023, 9, 8, 11, 57, 10, 911000, tzinfo=tzlocal())",
+            "LastUpdatedTime": "datetime.datetime(2023, 9, 8, 16, 30, 0, 708000, tzinfo=tzlocal())",
+            "RollbackConfiguration": {},
+            "StackStatus": "UPDATE_COMPLETE",
+            "DisableRollback": "False",
+            "NotificationARNs": [],
+            "Capabilities": [
+                "CAPABILITY_IAM",
+                "CAPABILITY_NAMED_IAM",
+                "CAPABILITY_AUTO_EXPAND"
+            ],
+            "Outputs": [
+                {
+                    "OutputKey": "TestingCdkStackNamedev",
+                    "OutputValue": "TestingCdkStack",
+                    "Description": "Name of CF Stack",
+                    "ExportName": "TestingCdkStack-Name-dev"
+                },
+                {
+                    "OutputKey": "TestingCdkStackAccountdev",
+                    "OutputValue": "929292929292929292",
+                    "Description": "Account ID of account",
+                    "ExportName": "TestingCdkStack-Account-dev"
+                },
+                {
+                    "OutputKey": "TestingCdkStackRegiondev",
+                    "OutputValue": "eu-central-1",
+                    "Description": "Region of account",
+                    "ExportName": "TestingCdkStack-Region-dev"
+                }
+            ],
+            "RoleARN": "arn:aws:iam::929292929292929292:role/cdk-hnb659fds-cfn-exec-role-929292929292929292-eu-central-1",
+            "Tags": [],
+            "EnableTerminationProtection": "False",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            }
+        }
+    ],
+    "ResponseMetadata": {
+        "RequestId": "0cb23658-bc59-438f-8e2b-0a3fb4135db7",
+        "HTTPStatusCode": 200,
+        "HTTPHeaders": {
+            "x-amzn-requestid": "0cb23658-bc59-438f-8e2b-0a3fb4135db7",
+            "date": "Fri, 08 Sep 2023 16:31:07 GMT",
+            "content-type": "text/xml",
+            "content-length": "2576",
+            "connection": "keep-alive"
+        },
+        "RetryAttempts": 0
+    }
+}
