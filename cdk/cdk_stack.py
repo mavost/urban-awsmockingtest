@@ -51,9 +51,11 @@ class CdkStack(Stack):
 
         my_lambda = aws_lambda.Function(
             self, f"{self.stack_name}-LambdaReporter-{stage}",
+            function_name=f"{self.stack_name}-LambdaReporter-{stage}",
             runtime=aws_lambda.Runtime.PYTHON_3_10,
             code=aws_lambda.Code.from_asset('src/lambda_reporter'),
             handler='reporter.handler',
+            
             role=my_LambdaRole
         )
 
