@@ -3,7 +3,7 @@ import os
 import pytest
 import logging
 
-from moto import mock_s3, mock_sqs
+from moto import mock_s3, mock_sqs, mock_lambda
 
 # this is for testing commands with parameters, see test_cmd_var.py
 def pytest_addoption(parser):
@@ -41,6 +41,11 @@ def s3_client(aws_credentials):
         conn = boto3.client("s3", region_name="eu-central-1")
         yield conn
 
+@pytest.fixture
+def lambda_client(aws_credentials):
+    with mock_lambda():
+        conn = boto3.client("lambda", region_name="eu-central-1")
+        yield conn
 
 @pytest.fixture
 def sqs_client(aws_credentials):

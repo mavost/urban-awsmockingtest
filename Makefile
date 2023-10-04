@@ -7,18 +7,23 @@ PYTEST = $(VENV_NAME)/bin/pytest
 
 testvar ?= somesetting
 
-.PHONY: run_tests clean
+.PHONY: run_tests clean src/lambda_reporter/reporter.py tests/test_lambda_reporter.py
+
 
 run_tests: logs/test_results.log
 
 # actual test cases
-logs/test_results.log: tests/test_s3.py src/*.py tests/conftest.py pytest.ini $(PYTEST)
+logs/test_results.log: tests/test_s3.py src/*.py tests/conftest.py pytest.ini
 	$(PYTEST) $<
 	mv $@ $(subst .py,.log,$(subst tests/,logs/,$<))
 
 
 # after installation of venv and req. we should have a pytest executable
 $(PYTEST): requirements.txt
+	python3 -m venv $(VENV_NAME)
+	$(VENV_NAME)/bin/pip install -r $<
+
+$(PYTHON): requirements.txt
 	python3 -m venv $(VENV_NAME)
 	$(VENV_NAME)/bin/pip install -r $<
 
@@ -30,7 +35,13 @@ clean:
 
 # another experiment with command line
 tests/test_cmd_var.py:
-	source $(VENV_NAME)/bin/activate && pytest -q $@ --cmdopt=$(testvar)
+	$(PYTEST) -q $@ --cmdopt=$(testvar)
+
+src/lambda_reporter/reporter.py:
+	$(PYTHON) $@
+
+tests/test_lambda_reporter.py:
+	$(PYTEST) -q $@
 
 # preparing python environment
 #$(VENV_NAME)/bin/activate: requirements.txt
