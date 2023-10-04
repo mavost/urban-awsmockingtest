@@ -19,14 +19,14 @@ class CdkStack(Stack):
         my_pipeline =  pipelines.CodePipeline(
             self, "Pipeline",
             pipeline_name="AwsUrbanAWSMockingTestCDK",
-            synth=pipelines.ShellStep("Synth",
+            synth=pipelines.ShellStep(
+                "Synth",
                 # Returns a GitHub source, using CodeStar connection to authenticate with GitHub and a separate webhook to detect changes.
                 # recommended but more difficult to set up if you are not the owner of the repo organization
                 input=pipelines.CodePipelineSource.connection(repo_string="mavost/urban_awsmockingtest",
                                                     branch="feat/cdk",
                                                     # Arn has to be created manually and beforehand using the AWS console
-                                                    connection_arn=github_arn,
-                                                    )
+                                                    connection_arn=github_arn
                                                 ),
                 # simple setup of the build environment and execution
                 commands=[
@@ -34,6 +34,7 @@ class CdkStack(Stack):
                     "python -m pip install -r requirements.txt",
                     "cdk synth"
                 ]
+            )
         )
 
         # attach the name, region of the underlying account(s) to the stack
