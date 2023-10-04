@@ -2,6 +2,7 @@ from aws_cdk import (
     Stack,
     CfnOutput,
     aws_lambda,
+    pipelines,
     aws_iam
 )
 #import aws_cdk.aws_secretsmanager as secretsmanager
@@ -12,8 +13,31 @@ class CdkStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, stage: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
         
+
+        github_arn = self.node.try_get_context("GitHubArn")
+
+        my_pipeline =  pipelines.CodePipeline(
+            self, "Pipeline",
+            pipeline_name="AwsUrbanAWSMockingTestCDK",
+            synth=pipelines.ShellStep("Synth",
+                # Returns a GitHub source, using CodeStar connection to authenticate with GitHub and a separate webhook to detect changes.
+                # recommended but more difficult to set up if you are not the owner of the repo organization
+                input=pipelines.CodePipelineSource.connection(repo_string="mavost/urban_awsmockingtest",
+                                                    branch="main",
+                                                    # Arn has to be created manually and beforehand using the AWS console
+                                                    connection_arn=github_arn,
+                                                    )
+                                                ),
+                # simple setup of the build environment and execution
+                commands=[
+                    "npm install -g aws-cdk",
+                    "python -m pip install -r requirements.txt",
+                    "cdk synth"
+                ]
+        )
+
         # attach the name, region of the underlying account(s) to the stack
-        
+
         CfnOutput(self, f"{self.stack_name}-Name-{stage}",
             value=self.stack_name,
             description='Name of CF Stack',
