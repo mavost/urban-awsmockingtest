@@ -23,7 +23,7 @@ class CdkStack(Stack):
                 # Returns a GitHub source, using CodeStar connection to authenticate with GitHub and a separate webhook to detect changes.
                 # recommended but more difficult to set up if you are not the owner of the repo organization
                 input=pipelines.CodePipelineSource.connection(repo_string="mavost/urban_awsmockingtest",
-                                                    branch="main",
+                                                    branch="feat/cdk",
                                                     # Arn has to be created manually and beforehand using the AWS console
                                                     connection_arn=github_arn,
                                                     )
